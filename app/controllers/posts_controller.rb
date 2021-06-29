@@ -4,20 +4,25 @@ class PostsController < ApplicationController
   end
 
   def edit
-    @post = Post.find(params[:id])
+    post_find_by_id
   end
 
   def update
-    @post = Post.find(params[:id])
-
-    @post.update(post_params)
-
+    post_find_by_id
+    if @post.update(post_params)
     redirect_to post_path(@post)
+    else
+      render :edit
+    end
   end
 
   private
 
   def post_params
     params.permit(:title, :category, :content)
+  end
+
+  def post_find_by_id
+    @post = Post.find_by_id(params[:id])
   end
 end
